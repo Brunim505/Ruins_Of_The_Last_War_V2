@@ -6,11 +6,6 @@ class Obj{
         this.h = h 
         this.a = a 
     }
-
-    draw_obj(){
-        draw.fillStyle = this.a
-        draw.fillRect(this.x,this.y,this.w,this.h)
-    }
 }
 class Hero extends Obj{}
 
