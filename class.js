@@ -7,7 +7,13 @@ class Obj{
         this.a = a 
     }
 }
-class Hero extends Obj{}
+class Hero extends Obj{
+    dir = 0
+    dri = 0
+    pts = 0
+    draw_hero(){}
+    atual_hero(){}
+}
 
 class Enemy extends Obj{}
 
