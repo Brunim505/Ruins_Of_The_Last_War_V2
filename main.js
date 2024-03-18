@@ -64,7 +64,7 @@ let orcs ={
           groupShoot.splice(groupShoot.indexOf(shoot),1)
           groupOrcs.splice(groupOrcs.indexOf(orc),1)
           bullets = 5
-          pts += 1
+          pts += 5
         }
       })
     })
