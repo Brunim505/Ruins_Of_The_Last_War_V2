@@ -44,25 +44,25 @@ let shoots = {
   },
 }
 
-let groupOrcs = []
-let orcs ={
+let groupEnemy = []
+let enemys ={
   time : 0,
-  spawOrcs(){
-    this.time +=1
+  spawEnemys(){
+    this.time +=3
     size_X = Math.random() * (100 - 80) + 80
     size_Y = Math.random() * (140 - 80) + 80
-    pos_Y = Math.random() *(500 - 80) + 80
+    pos_Y = Math.random() *(600 - 200) + 300
     if(this.time>=60){
-      groupOrcs.push(new Orcs(1400, pos_Y, size_X, size_Y, "assets/orc2.png"))
+      groupEnemy.push(new Enemy(1400, pos_Y, size_X, size_Y, "assets/orc2.png"))
       this.time=0
     }
   },
-  destroyOrcs(){
+  destroyEnemys(){
     groupShoot.forEach((shoot)=>{
-      groupOrcs.forEach((orc)=>{
-        if(shoot.collide(orc)){
+      groupEnemy.forEach((enemy)=>{
+        if(shoot.collide(enemy)){
           groupShoot.splice(groupShoot.indexOf(shoot),1)
-          groupOrcs.splice(groupOrcs.indexOf(orc),1)
+          groupEnemy.splice(groupEnemy.indexOf(enemy),1)
           bullets = 5
           pts += 5
         }
@@ -71,17 +71,17 @@ let orcs ={
   },
 
   draw(){
-    groupOrcs.forEach((orc)=>{
-      orc.draw()
+    groupEnemy.forEach((enemy)=>{
+      enemy.draw()
     })
   },
   update(){
-    this.spawOrcs()
-    this.destroyOrcs()
-    groupOrcs.forEach((orc)=>{
-      orc.move()
-      if(orc.x < -100){
-        groupOrcs.splice(groupOrcs.indexOf(orc),1)
+    this.spawEnemys()
+    this.destroyEnemys()
+    groupEnemy.forEach((enemy)=>{
+      enemy.move()
+      if(enemy.x < -100){
+        groupEnemy.splice(groupEnemy.indexOf(enemy),1)
         mudaCena(gameOver)
       }
     })
@@ -110,7 +110,7 @@ let menu = {
 let game = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
-  heroi: new Obj(30,200,80,120, "assets/heroi1.png"),
+  heroi: new Obj(30,200,80,120, "assets/hero1.png"),
 
 
   click(){
@@ -139,11 +139,11 @@ let game = {
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
     this.heroi.draw()
     shoots.draw()
-    orcs.draw()   
+    enemys.draw()   
   },
   update(){
     shoots.update()
-    orcs.update()
+    enemys.update()
     this.placar.update_text(pts)
   },
 }
@@ -165,7 +165,7 @@ let gameOver = {
   limpa_cena(){
     pts = 0
     bullets = 5
-    groupOrcs = []
+    groupEnemy = []
     groupShoot = []    
   },
 
