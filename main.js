@@ -1,4 +1,7 @@
 var canvas = document.getElementById('canvas').getContext("2d")
+let bala = new Audio('./Assets/tiro.mp3')
+let morte = new Audio('./assets/lego-yoda-death-sound-effect.mp3')
+let trilha = new Audio('./assets/musica.mp3')
 canvas.imageSmoothingEnabled = false
 
   document.addEventListener("click", (e)=>{
@@ -104,18 +107,22 @@ let menu = {
     this.heroi.draw()
   },
   update(){
+    trilha.play()
   },
 }
 
 let game = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
+  tiro_txt: new Text("Munição: "),
+  tiro: new Text(bullets),
   heroi: new Obj(30,200,80,120, "assets/heroi1.png"),
 
 
   click(){
     if(bullets > 0){
       bullets -= 1
+      bala.play()
       groupShoot.push(new Shoot(this.heroi.x,(this.heroi.y+this.heroi.height/2)-30,18,8, "assets/tiro5.png"))
     }
   },
@@ -137,11 +144,15 @@ let game = {
   draw(){
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
+    this.tiro_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.tiro.draw_text(30,"Tahoma",250,50,"white")
     this.heroi.draw()
     shoots.draw()
     orcs.draw()   
   },
   update(){
+    trilha.play()
+
     shoots.update()
     orcs.update()
     this.placar.update_text(pts)
@@ -151,14 +162,20 @@ let game = {
 let gameOver = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
+  tiro_txt: new Text("Munição: "),
+  tiro: new Text(bullets),
   lbl_game_over: new Text("Game Over"),
+ 
 
   draw(){
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
+    this.tiro_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.tiro.draw_text(30,"Tahoma",250,50,"white")
     this.lbl_game_over.draw_text(80,"Verdana",400,300,"white")
   },
   update(){
+    morte.play()
     this.placar.update_text(pts)
   },
 
