@@ -8,13 +8,13 @@ canvas.imageSmoothingEnabled = false
   });
 
   document.addEventListener('keydown',(e)=>{
-    if(cenaCorrente.moveHeroi){
-        cenaCorrente.moveHeroi(e)
+    if(cenaCorrente.movehero){
+        cenaCorrente.movehero(e)
     }
 })
 document.addEventListener('keyup', (e)=>{
-    if(cenaCorrente.moveHeroi){
-        cenaCorrente.moveHeroi(e)
+    if(cenaCorrente.movehero){
+        cenaCorrente.movehero(e)
     }
 })
 
@@ -63,7 +63,7 @@ let orcs ={
         if(shoot.collide(orc)){
           groupShoot.splice(groupShoot.indexOf(shoot),1)
           groupOrcs.splice(groupOrcs.indexOf(orc),1)
-          bullets = 5
+          bullets = 15
           pts += 5
         }
       })
@@ -88,11 +88,40 @@ let orcs ={
   }
 }
 
+let infinityBg = {
+  bg: new Obj(0,0,1300,600,"assets/fundo.jpg"),
+  bg2: new Obj(-1300,0,1300,600,"assets/fundo2.jpg"),
+  bg3: new Obj(-2600,0,1300,600,"assets/fundo.jpg"),
+
+  draw(){
+    this.bg.draw()
+    this.bg2.draw()
+    this.bg3.draw()
+  },
+
+  moveBg(){
+    this.bg.x +=1
+    this.bg2.x +=1
+    this.bg3.x +=1
+
+    if(this.bg.x >= 2600){
+      this.bg.x = 0
+    }
+    if(this.bg2.x >= 1300){
+      this.bg2.x = -1300
+    }
+    if(this.bg3.x >= 0){
+      this.bg3.x = -2600
+    }
+  },
+
+}
+
 let menu = {
   
   titulo: new Text("Skull-Wave"),   
   titulo2: new Text("Click para Iniciar"),
-  heroi: new Obj(30,380,80,120, "assets/heroi1.png"),
+  hero: new Obj(30,380,80,120, "assets/hero1.png"),
   
   click(){
     mudaCena(game)
@@ -101,35 +130,36 @@ let menu = {
   draw(){
     this.titulo.draw_text(80,"Tahoma",420,200,"darkolivegreen")
     this.titulo2.draw_text(40,"Verdana",420,400,"white")
-    this.heroi.draw()
+    this.hero.draw()
   },
   update(){
+    infinityBg.moveBg()
   },
 }
 
 let game = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
-  heroi: new Obj(30,200,80,120, "assets/heroi1.png"),
+  hero: new Obj(30,200,80,120, "assets/hero1.png"),
 
 
   click(){
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(this.heroi.x,(this.heroi.y+this.heroi.height/2)-30,18,8, "assets/tiro5.png"))
+      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-30,18,8, "assets/tiro5.png"))
     }
   },
   
-  moveHeroi(event){
+  movehero(event){
     const speed = 40;
-    if (event.key === "a" && this.heroi.x > 0) {
-        this.heroi.x -= speed;
-      } else if (event.key === "d" && this.heroi.x < canvas.canvas.width - this.heroi.width) {
-        this.heroi.x += speed;
-      } else if (event.key === "w" && this.heroi.y > 0) {
-        this.heroi.y -= speed;
-      } else if (event.key === "s" && this.heroi.y < canvas.canvas.height - this.heroi.height) {
-        this.heroi.y += speed;
+    if (event.key === "a" && this.hero.x > 0) {
+        this.hero.x -= speed;
+      } else if (event.key === "d" && this.hero.x < canvas.canvas.width - this.hero.width) {
+        this.hero.x += speed;
+      } else if (event.key === "w" && this.hero.y > 0) {
+        this.hero.y -= speed;
+      } else if (event.key === "s" && this.hero.y < canvas.canvas.height - this.hero.height) {
+        this.hero.y += speed;
       }
       console.log(event)
     },
@@ -137,11 +167,12 @@ let game = {
   draw(){
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
-    this.heroi.draw()
+    this.hero.draw()
     shoots.draw()
     orcs.draw()   
   },
   update(){
+    infinityBg.moveBg()
     shoots.update()
     orcs.update()
     this.placar.update_text(pts)
@@ -159,6 +190,7 @@ let gameOver = {
     this.lbl_game_over.draw_text(80,"Verdana",400,300,"white")
   },
   update(){
+    infinityBg.moveBg()
     this.placar.update_text(pts)
   },
 

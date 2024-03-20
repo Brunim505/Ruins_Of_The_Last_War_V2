@@ -19,19 +19,7 @@ class Obj{
         canvas.drawImage(img, this.x, this.y, this.width, this.height)
       }
     }
-  
-    animation(vel, limit, nome){
-      this.timer += 1
-      if (this.timer >= vel) {
-        this.timer = 0
-        this.frame += 1
-      }
-      if (this.frame >= limit) {
-        this.frame = 0
-      }
-      this.image = "assets/images/" + nome + this.frame + ".png"
-    }
-  
+    
     collide(obj){
       if (this.x < obj.x + obj.width &&
           this.x + this.width > obj.x &&
