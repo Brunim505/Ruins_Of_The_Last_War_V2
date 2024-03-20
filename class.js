@@ -50,15 +50,21 @@ class Obj{
   
   class Shoot extends Obj{
     move(){
-      this.x +=10
+      this.x +=20
     }
   }
   
-  //Lembrar de recolocar a velocidade dos Orcs
   class Orcs extends Obj{
     velocidade = Math.random()*(12 - 2) + 2
   move(){
     this.x -= this.velocidade 
+    }
+  }
+
+  class Muro extends Obj{
+    draw(){
+      canvas.fillStyle = this.image
+      canvas.fillRect(this.x, this.y, this.width, this.height)
     }
   }
   

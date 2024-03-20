@@ -23,7 +23,7 @@ function mudaCena(cena){
   cenaCorrente = cena
 }
 
-let bullets = 5
+let bullets = 15
 let pts = 0
 
 
@@ -44,6 +44,22 @@ let shoots = {
   },
 }
 
+let groupMuro = []
+let muro = {
+  init(){
+    groupMuro.push(new Muro(450,50,20,100,'blue')),
+    groupMuro.push(new Muro(450,250,20,100,'blue')),
+    groupMuro.push(new Muro(450,450,20,100,'blue'))
+
+  },
+  draw(){
+    groupMuro.forEach((muro) =>{
+      muro.draw()
+    })
+  } 
+}
+
+muro.init()
 let groupOrcs = []
 let orcs ={
   time : 0,
@@ -80,7 +96,7 @@ let orcs ={
     this.destroyOrcs()
     groupOrcs.forEach((orc)=>{
       orc.move()
-      if(orc.x < -100){
+      if(orc.x < 440 ){
         groupOrcs.splice(groupOrcs.indexOf(orc),1)
         mudaCena(gameOver)
       }
@@ -140,18 +156,18 @@ let menu = {
 let game = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
-  hero: new Obj(30,200,80,120, "assets/hero1.png"),
+  hero: new Obj(30,200,80,120, "assets/Shot3.png"),
 
 
-  click(){
+  click(event){
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-30,18,8, "assets/tiro5.png"))
+      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-5,18,8, "assets/bullet.png"))
     }
   },
   
   movehero(event){
-    const speed = 40;
+    const speed = 50;
     if (event.key === "a" && this.hero.x > 0) {
         this.hero.x -= speed;
       } else if (event.key === "d" && this.hero.x < canvas.canvas.width - this.hero.width) {
