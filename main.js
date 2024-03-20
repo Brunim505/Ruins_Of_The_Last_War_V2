@@ -32,6 +32,7 @@ let shoots = {
   draw(){
     groupShoot.forEach((shoot)=>{
       shoot.draw()
+      shoot.draw()
     })
   },
   update(){
@@ -58,18 +59,18 @@ let muro = {
     })
   } 
 }
-
 muro.init()
+
 let groupOrcs = []
 let orcs ={
   time : 0,
   spawOrcs(){
-    this.time +=1
+    this.time +=10
     size_X = Math.random() * (100 - 80) + 80
     size_Y = Math.random() * (140 - 80) + 80
     pos_Y = Math.random() *(500 - 80) + 80
-    if(this.time>=60){
-      groupOrcs.push(new Orcs(1400, pos_Y, size_X, size_Y, "assets/orc2.png"))
+    if(this.time>=1000  ){
+      groupOrcs.push(new Orcs(1400, pos_Y, size_X, size_Y, "assets/orc3.png"))
       this.time=0
     }
   },
@@ -80,7 +81,7 @@ let orcs ={
           groupShoot.splice(groupShoot.indexOf(shoot),1)
           groupOrcs.splice(groupOrcs.indexOf(orc),1)
           bullets = 15
-          pts += 5
+          pts += 10
         }
       })
     })
@@ -137,7 +138,7 @@ let menu = {
   
   titulo: new Text("Skull-Wave"),   
   titulo2: new Text("Click para Iniciar"),
-  hero: new Obj(150,600,200,200, "assets/caveira.png"),
+  hero: new Obj(160,220,150,150, "assets/hero1.png"),
   
   click(){
     mudaCena(game)
@@ -156,13 +157,18 @@ let menu = {
 let game = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
+  munição_txt: new Text("Munição: "),
+  munição: new Text(bullets),
+
   hero: new Obj(30,200,80,120, "assets/Shot3.png"),
 
 
   click(event){
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-5,18,8, "assets/bullet.png"))
+      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-0,20,10, "assets/bullet.jpg"))
+      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-25 ,20,10, "assets/bullet.jpg"))
+      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-50,20,10, "assets/bullet.jpg"))
     }
   },
   
@@ -183,6 +189,8 @@ let game = {
   draw(){
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
+    this.munição_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.munição.draw_text(30,"Tahoma",210,50,"white")
     this.hero.draw()
     muro.draw()
     shoots.draw()
