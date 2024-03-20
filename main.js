@@ -137,7 +137,7 @@ let menu = {
   
   titulo: new Text("Skull-Wave"),   
   titulo2: new Text("Click para Iniciar"),
-  hero: new Obj(30,380,80,120, "assets/hero1.png"),
+  hero: new Obj(150,600,200,200, "assets/caveira.png"),
   
   click(){
     mudaCena(game)
@@ -184,6 +184,7 @@ let game = {
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
     this.hero.draw()
+    muro.draw()
     shoots.draw()
     orcs.draw()   
   },
