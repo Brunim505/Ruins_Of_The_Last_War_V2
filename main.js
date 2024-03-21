@@ -23,6 +23,10 @@ function mudaCena(cena){
   cenaCorrente = cena
 }
 
+let audio1 = new Audio("assets/musica.mp3")
+let audio2 = new Audio("assets/enemy_hit.mp3")
+let audio3 = new Audio("assets/game_over.wav")
+
 let bullets = 15
 let pts = 0
 
@@ -61,96 +65,127 @@ let muro = {
 }
 muro.init()
 
-let groupOrcs = []
-let orcs ={
+let groupEnemy = []
+let enemys ={
   time : 0,
-  spawOrcs(){
+  spawEnemys(){
     this.time +=10
     size_X = Math.random() * (100 - 80) + 80
     size_Y = Math.random() * (140 - 80) + 80
-    pos_Y = Math.random() *(500 - 80) + 80
+    pos_Y = Math.random() * 300 
     if(this.time>=1000  ){
-      groupOrcs.push(new Orcs(1400, pos_Y, size_X, size_Y, "assets/orc3.png"))
+      groupEnemy.push(new Enemy(1400, pos_Y, size_X, size_Y, "assets/orc3.png"))
       this.time=0
     }
   },
-  destroyOrcs(){
+  destroyEnemy(){
     groupShoot.forEach((shoot)=>{
-      groupOrcs.forEach((orc)=>{
-        if(shoot.collide(orc)){
+     groupEnemy.forEach((enemy)=>{
+        if(shoot.collide(enemy)){
           groupShoot.splice(groupShoot.indexOf(shoot),1)
-          groupOrcs.splice(groupOrcs.indexOf(orc),1)
+          groupEnemy.splice(groupEnemy.indexOf(enemy),1)
           bullets = 15
           pts += 10
+          audio2.play()
         }
       })
     })
   },
 
   draw(){
-    groupOrcs.forEach((orc)=>{
-      orc.draw()
+    groupEnemy.forEach((enemy)=>{
+      enemy.draw()
     })
   },
   update(){
-    this.spawOrcs()
-    this.destroyOrcs()
-    groupOrcs.forEach((orc)=>{
-      orc.move()
-      if(orc.x < 440 ){
-        groupOrcs.splice(groupOrcs.indexOf(orc),1)
+    this.spawEnemys()
+    this.destroyEnemy()
+      groupEnemy.forEach((enemy)=>{
+      enemy.move()
+      if(enemy.x < 440 ){
+        groupEnemy.splice(groupEnemy.indexOf(enemy),1)
         mudaCena(gameOver)
       }
     })
   }
 }
 
-let infinityBg = {
-  bg: new Obj(0,0,1300,600,"assets/fundo.jpg"),
-  bg2: new Obj(-1300,0,1300,600,"assets/fundo2.jpg"),
-  bg3: new Obj(-2600,0,1300,600,"assets/fundo.jpg"),
+let enemys2 ={
+  time : 0,
+  spawEnemys(){
+    this.time +=10
+    size_X = Math.random() * (100 - 80) + 80
+    size_Y = Math.random() * (140 - 80) + 80
+    pos_Y = Math.random() * (500 - 150) + 150
+    if(this.time>=1000  ){
+      groupEnemy.push(new Enemy(1400, pos_Y, size_X, size_Y, "assets/orc3.png"))
+      this.time=0
+    }
+  },
+  destroyEnemy(){
+    groupShoot.forEach((shoot)=>{
+     groupEnemy.forEach((enemy)=>{
+        if(shoot.collide(enemy)){
+          groupShoot.splice(groupShoot.indexOf(shoot),1)
+          groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+          bullets = 15
+          pts += 10
+          audio2.play()
+        }
+      })
+    })
+  },
+
+  draw(){
+    groupEnemy.forEach((enemy)=>{
+      enemy.draw()
+    })
+  },
+  update(){
+    this.spawEnemys()
+    this.destroyEnemy()
+      groupEnemy.forEach((enemy)=>{
+      enemy.move()
+      if(enemy.x < 440 ){
+        groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+        mudaCena(gameOver)
+      }
+    })
+  }
+}
+
+let city = {
+  bg: new Obj(0,0,1300,600,"assets/fundo.png"),
+  draw(){
+    this.bg.draw()
+  },
+}
+
+let graveyard = {
+  bg: new Obj(0,0,1300,600,"assets/fundo2.png"),
 
   draw(){
     this.bg.draw()
-    this.bg2.draw()
-    this.bg3.draw()
   },
-
-  moveBg(){
-    this.bg.x +=1
-    this.bg2.x +=1
-    this.bg3.x +=1
-
-    if(this.bg.x >= 2600){
-      this.bg.x = 0
-    }
-    if(this.bg2.x >= 1300){
-      this.bg2.x = -1300
-    }
-    if(this.bg3.x >= 0){
-      this.bg3.x = -2600
-    }
-  },
-
 }
 
 let menu = {
   
   titulo: new Text("Skull-Wave"),   
   titulo2: new Text("Click para Iniciar"),
-  hero: new Obj(160,220,150,150, "assets/hero1.png"),
+  hero: new Obj(160,220,100,150, "assets/hero1.png"),
   
   click(){
     mudaCena(game)
   },
 
   draw(){
+    city.draw()
     this.titulo.draw_text(80,"Tahoma",420,200,"darkolivegreen")
     this.titulo2.draw_text(40,"Verdana",420,400,"white")
     this.hero.draw()
   },
   update(){
-    infinityBg.moveBg()
   },
 }
 
@@ -160,46 +195,99 @@ let game = {
   munição_txt: new Text("Munição: "),
   munição: new Text(bullets),
 
-  hero: new Obj(30,200,80,120, "assets/Shot3.png"),
+  hero: new Obj(30,300,100,150, "assets/Shot3.png"),
 
 
   click(event){
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-0,20,10, "assets/bullet.jpg"))
-      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-25 ,20,10, "assets/bullet.jpg"))
-      groupShoot.push(new Shoot(this.hero.x,(this.hero.y+this.hero.height/2)-50,20,10, "assets/bullet.jpg"))
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/bullet.jpg"))
     }
   },
   
   movehero(event){
     const speed = 50;
-    if (event.key === "a" && this.hero.x > 0) {
+    if (event.key === "a" && this.hero.x > 50) {
         this.hero.x -= speed;
-      } else if (event.key === "d" && this.hero.x < canvas.canvas.width - this.hero.width) {
+      } else if (event.key === "d" && this.hero.x < 440 - this.hero.width) {
         this.hero.x += speed;
-      } else if (event.key === "w" && this.hero.y > 0) {
+      } else if (event.key === "w" && this.hero.y > 150 ) {
         this.hero.y -= speed;
-      } else if (event.key === "s" && this.hero.y < canvas.canvas.height - this.hero.height) {
+      } else if (event.key === "s" && this.hero.y < 550 - this.hero.height) {
         this.hero.y += speed;
       }
       console.log(event)
     },
 
   draw(){
+    city.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
     this.munição_txt.draw_text(30,"Tahoma",100,50,"white")
-    this.munição.draw_text(30,"Tahoma",210,50,"white")
+    this.munição.draw_text(30,"Tahoma",230,50,"white")
     this.hero.draw()
     muro.draw()
     shoots.draw()
-    orcs.draw()   
+    enemys.draw()
+    audio1.play()   
   },
   update(){
-    infinityBg.moveBg()
     shoots.update()
-    orcs.update()
+    enemys.update()
+    this.placar.update_text(pts)
+  },
+  next_level(){
+    if(pts => 50){
+      mudaCena(game2)
+    }
+  }
+}
+
+let game2 = {
+  placar_txt: new Text("Pontos: "),
+  placar: new Text(pts),
+  munição_txt: new Text("Munição: "),
+  munição: new Text(bullets),
+
+  hero: new Obj(30,300,100,150, "assets/Shot3.png"),
+
+
+  click(event){
+    if(bullets > 0){
+      bullets -= 1
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/bullet.jpg"))
+    }
+  },
+  
+  movehero(event){
+    const speed = 50;
+    if (event.key === "a" && this.hero.x > 50) {
+        this.hero.x -= speed;
+      } else if (event.key === "d" && this.hero.x < 440 - this.hero.width) {
+        this.hero.x += speed;
+      } else if (event.key === "w" && this.hero.y > 150 ) {
+        this.hero.y -= speed;
+      } else if (event.key === "s" && this.hero.y < 550 - this.hero.height) {
+        this.hero.y += speed;
+      }
+      console.log(event)
+    },
+
+  draw(){
+    graveyard.draw()
+    this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
+    this.placar.draw_text(30,"Tahoma",1210,50,"white")
+    this.munição_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.munição.draw_text(30,"Tahoma",230,50,"white")
+    this.hero.draw()
+    muro.draw()
+    shoots.draw()
+    enemys.draw()
+    audio1.play()   
+  },
+  update(){
+    shoots.update()
+    enemys.update()
     this.placar.update_text(pts)
   },
 }
@@ -210,19 +298,22 @@ let gameOver = {
   lbl_game_over: new Text("Game Over"),
 
   draw(){
+    city.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
     this.lbl_game_over.draw_text(80,"Verdana",400,300,"white")
+    audio1.pause()
+    audio3.play()
+
   },
   update(){
-    infinityBg.moveBg()
     this.placar.update_text(pts)
   },
 
   limpa_cena(){
     pts = 0
-    bullets = 5
-    groupOrcs = []
+    bullets = 15
+    groupEnemy = []
     groupShoot = []    
   },
 

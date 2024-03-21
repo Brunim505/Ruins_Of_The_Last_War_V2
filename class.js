@@ -54,7 +54,7 @@ class Obj{
     }
   }
   
-  class Orcs extends Obj{
+  class Enemy extends Obj{
     velocidade = Math.random()*(12 - 2) + 2
   move(){
     this.x -= this.velocidade 
