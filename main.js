@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById('canvas').getContext("2d")
 canvas.imageSmoothingEnabled = false
 
@@ -324,3 +325,4 @@ function main(){
 
 mudaCena(menu)
 main()
+

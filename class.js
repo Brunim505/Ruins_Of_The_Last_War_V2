@@ -1,3 +1,4 @@
+
 class Obj{
 
     frame = 0
@@ -71,4 +72,10 @@ class Obj{
   }
   
   
+
+
+
+
+
+
   
