@@ -11,12 +11,17 @@ canvas.imageSmoothingEnabled = false
     if(cenaCorrente.movehero){
         cenaCorrente.movehero(e)
     }
-})
-document.addEventListener('keyup', (e)=>{
+  })
+  document.addEventListener('keydown',(e)=>{
+    if(cenaCorrente.inicio){
+        cenaCorrente.inicio(e)
+    }
+  })
+  document.addEventListener('keyup', (e)=>{
     if(cenaCorrente.movehero){
         cenaCorrente.movehero(e)
     }
-})
+  })
 
 let cenaCorrente = {}
 function mudaCena(cena){  
@@ -26,16 +31,17 @@ function mudaCena(cena){
 let audio1 = new Audio("assets/musica.mp3")
 let audio2 = new Audio("assets/enemy_hit.mp3")
 let audio3 = new Audio("assets/game_over.wav")
+let audio4 = new Audio("assets/shot.mp3")
 
 let bullets = 15
 let pts = 0
+let vida = 5
 
 
 let groupShoot = []
 let shoots = {
   draw(){
     groupShoot.forEach((shoot)=>{
-      shoot.draw()
       shoot.draw()
     })
   },
@@ -70,11 +76,14 @@ let enemys ={
   time : 0,
   spawEnemys(){
     this.time +=10
-    size_X = Math.random() * (100 - 80) + 80
-    size_Y = Math.random() * (140 - 80) + 80
-    pos_Y = Math.random() * 300 
+    // size_X = Math.random() * (100 - 80) + 80
+    // size_Y = Math.random() * (140 - 80) + 80
+    pos_Y = Math.random() * (460 - 200) + 200 
     if(this.time>=1000  ){
-      groupEnemy.push(new Enemy(1400, pos_Y, size_X, size_Y, "assets/orc3.png"))
+      groupEnemy.push(new Enemy(1400, pos_Y, 80, 150, "assets/orc3.png"))
+        // pos y minimo = 460
+        // 290
+
       this.time=0
     }
   },
@@ -104,101 +113,82 @@ let enemys ={
       enemy.move()
       if(enemy.x < 440 ){
         groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+        vida -= 1
+      }
+      else if(vida <= 0){
         mudaCena(gameOver)
       }
+    
     })
   }
 }
+let bgmenu = {
+  bg: new Obj(0,0,1300,600,"assets/menu.jpg"),
 
-let enemys2 ={
-  time : 0,
-  spawEnemys(){
-    this.time +=10
-    size_X = Math.random() * (100 - 80) + 80
-    size_Y = Math.random() * (140 - 80) + 80
-    pos_Y = Math.random() * (500 - 150) + 150
-    if(this.time>=1000  ){
-      groupEnemy.push(new Enemy(1400, pos_Y, size_X, size_Y, "assets/orc3.png"))
-      this.time=0
-    }
-  },
-  destroyEnemy(){
-    groupShoot.forEach((shoot)=>{
-     groupEnemy.forEach((enemy)=>{
-        if(shoot.collide(enemy)){
-          groupShoot.splice(groupShoot.indexOf(shoot),1)
-          groupEnemy.splice(groupEnemy.indexOf(enemy),1)
-          bullets = 15
-          pts += 10
-          audio2.play()
-        }
-      })
-    })
-  },
-
-  draw(){
-    groupEnemy.forEach((enemy)=>{
-      enemy.draw()
-    })
-  },
-  update(){
-    this.spawEnemys()
-    this.destroyEnemy()
-      groupEnemy.forEach((enemy)=>{
-      enemy.move()
-      if(enemy.x < 440 ){
-        groupEnemy.splice(groupEnemy.indexOf(enemy),1)
-        mudaCena(gameOver)
-      }
-    })
-  }
-}
-
-let city = {
-  bg: new Obj(0,0,1300,600,"assets/fundo.png"),
   draw(){
     this.bg.draw()
   },
+}
+
+
+let city = {
+  bg: new Obj(0,0,1300,600,"assets/fase1.png"),
+
+  draw(){
+    this.bg.draw()
+  },
+  next_level(){
+    if(pts >= 50){
+      mudaCena(fase2)
+    }
+  }
 }
 
 let graveyard = {
-  bg: new Obj(0,0,1300,600,"assets/fundo2.png"),
+  bg: new Obj(0,0,1300,600,"assets/fase2.png"),
 
   draw(){
     this.bg.draw()
   },
+  next_level(){
+    if(pts >= 50){
+      mudaCena(fase3)
+    }
+  }
 }
 
 let menu = {
   
   titulo: new Text("Skull-Wave"),   
-  titulo2: new Text("Click para Iniciar"),
-  hero: new Obj(160,220,100,150, "assets/hero1.png"),
+  titulo2: new Text("Aperte Espaço Para Iniciar"),
   
-  click(){
-    mudaCena(game)
+  inicio(event){
+    if (event.key == " "){
+      mudaCena(fase1);
+      console.log()
+    }
   },
 
   draw(){
-    city.draw()
+    bgmenu.draw()
     this.titulo.draw_text(80,"Tahoma",420,200,"darkolivegreen")
     this.titulo2.draw_text(40,"Verdana",420,400,"white")
-    this.hero.draw()
   },
   update(){
   },
 }
 
-let game = {
+let fase1 = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
-  munição_txt: new Text("Munição: "),
-  munição: new Text(bullets),
+  vida_txt: new Text("Vida: "),
+  vida: new Text(vida),
 
   hero: new Obj(30,300,100,150, "assets/Shot3.png"),
 
 
-  click(event){
+  click(){
+    audio4.play()
     if(bullets > 0){
       bullets -= 1
       groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/bullet.jpg"))
@@ -211,7 +201,7 @@ let game = {
         this.hero.x -= speed;
       } else if (event.key === "d" && this.hero.x < 440 - this.hero.width) {
         this.hero.x += speed;
-      } else if (event.key === "w" && this.hero.y > 150 ) {
+      } else if (event.key === "w" && this.hero.y > 200 ) {
         this.hero.y -= speed;
       } else if (event.key === "s" && this.hero.y < 550 - this.hero.height) {
         this.hero.y += speed;
@@ -223,8 +213,8 @@ let game = {
     city.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
-    this.munição_txt.draw_text(30,"Tahoma",100,50,"white")
-    this.munição.draw_text(30,"Tahoma",230,50,"white")
+    this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.vida.draw_text(30,"Tahoma",230,50,"white")
     this.hero.draw()
     muro.draw()
     shoots.draw()
@@ -235,24 +225,24 @@ let game = {
     shoots.update()
     enemys.update()
     this.placar.update_text(pts)
-  },
-  next_level(){
-    if(pts => 50){
-      mudaCena(game2)
-    }
-  }
+    this.vida.update_text(vida)
+    if (pts >= 50) {
+      city.next_level();
+  } 
+}
 }
 
-let game2 = {
+let fase2 = {
+  
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
-  munição_txt: new Text("Munição: "),
-  munição: new Text(bullets),
-
+  vida_txt: new Text("Vida: "),
+  vida: new Text(vida),
   hero: new Obj(30,300,100,150, "assets/Shot3.png"),
 
 
-  click(event){
+  click(){
+    audio4.play()
     if(bullets > 0){
       bullets -= 1
       groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/bullet.jpg"))
@@ -277,8 +267,8 @@ let game2 = {
     graveyard.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
-    this.munição_txt.draw_text(30,"Tahoma",100,50,"white")
-    this.munição.draw_text(30,"Tahoma",230,50,"white")
+    this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.vida.draw_text(30,"Tahoma",230,50,"white")
     this.hero.draw()
     muro.draw()
     shoots.draw()
@@ -289,6 +279,7 @@ let game2 = {
     shoots.update()
     enemys.update()
     this.placar.update_text(pts)
+    this.vida.update_text(vida)
   },
 }
 

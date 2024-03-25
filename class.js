@@ -31,6 +31,8 @@ class Obj{
             return false
           }
     }
+    anim2(){
+    }
   }
   
   class Text{
