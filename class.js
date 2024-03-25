@@ -13,7 +13,7 @@ class Obj{
     }
 }
   
-class Text{
+class Text extends Obj{
     draw_text(size, font, x, y, color){
     }
     update_text(valor){
