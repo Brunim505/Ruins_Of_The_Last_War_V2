@@ -28,10 +28,10 @@ function mudaCena(cena){
   cenaCorrente = cena
 }
 
-let audio1 = new Audio("assets/musica.mp3")
-let audio2 = new Audio("assets/enemy_hit.mp3")
-let audio3 = new Audio("assets/game_over.wav")
-let audio4 = new Audio("assets/shot.mp3")
+let audio1 = new Audio("assets/audios/musica1.mp3")
+let audio2 = new Audio("assets/audios/enemy_hit.mp3")
+let audio3 = new Audio("assets/audios/game_over.wav")
+let audio4 = new Audio("assets/audios/shot.mp3")
 
 let bullets = 15
 let pts = 0
@@ -80,7 +80,7 @@ let enemys ={
     // size_Y = Math.random() * (140 - 80) + 80
     pos_Y = Math.random() * (460 - 200) + 200 
     if(this.time>=1000  ){
-      groupEnemy.push(new Enemy(1400, pos_Y, 80, 150, "assets/orc3.png"))
+      groupEnemy.push(new Enemy(1400, pos_Y, 80, 150, "assets/enemy2/orc3.png"))
         // pos y minimo = 460
         // 290
 
@@ -123,7 +123,7 @@ let enemys ={
   }
 }
 let bgmenu = {
-  bg: new Obj(0,0,1300,600,"assets/menu.jpg"),
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/menu.jpg"),
 
   draw(){
     this.bg.draw()
@@ -132,7 +132,7 @@ let bgmenu = {
 
 
 let city = {
-  bg: new Obj(0,0,1300,600,"assets/fase1.png"),
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/fase1.png"),
 
   draw(){
     this.bg.draw()
@@ -145,7 +145,7 @@ let city = {
 }
 
 let graveyard = {
-  bg: new Obj(0,0,1300,600,"assets/fase2.png"),
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/fase2.png"),
 
   draw(){
     this.bg.draw()
@@ -184,14 +184,14 @@ let fase1 = {
   vida_txt: new Text("Vida: "),
   vida: new Text(vida),
 
-  hero: new Obj(30,300,100,150, "assets/Shot3.png"),
+  hero: new Obj(30,300,100,150, "assets/hero/Shot3.png"),
 
 
   click(){
     audio4.play()
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/bullet.jpg"))
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/hero/bullet.jpg"))
     }
   },
   
@@ -238,14 +238,14 @@ let fase2 = {
   placar: new Text(pts),
   vida_txt: new Text("Vida: "),
   vida: new Text(vida),
-  hero: new Obj(30,300,100,150, "assets/Shot3.png"),
+  hero: new Obj(30,300,100,150, "assets/hero/Shot3.png"),
 
 
   click(){
     audio4.play()
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/bullet.jpg"))
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/hero/bullet.jpg"))
     }
   },
   
@@ -304,6 +304,7 @@ let gameOver = {
   limpa_cena(){
     pts = 0
     bullets = 15
+    vida = 5
     groupEnemy = []
     groupShoot = []    
   },
