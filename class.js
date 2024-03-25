@@ -25,15 +25,6 @@ class Shoot extends Obj{
     }
 }
   
-class Enemy extends Obj{
-  move(){
-  }
-}
-
-class Muro extends Obj{
-    draw(){
-    }
-}
   
   
 
