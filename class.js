@@ -70,7 +70,7 @@ class Obj{
           this.tempo = 0
           this.frame += 1
       }
-      if(this.frame>3){
+      if(this.frame>6){
           this.frame = 1
       }
       this.image = "Assets/"+nome+this.frame+".png"
