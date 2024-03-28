@@ -64,11 +64,12 @@ class Obj{
   }
 
   class Muro extends Obj{
-    draw(){
-      canvas.fillStyle = this.image
-      canvas.fillRect(this.x, this.y, this.width, this.height)
+    
+      
+
     }
-  }
+
+  
   
   
   

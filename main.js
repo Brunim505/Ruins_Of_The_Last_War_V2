@@ -185,6 +185,7 @@ let fase1 = {
   vida: new Text(vida),
 
   hero: new Obj(30,300,100,150, "assets/hero/Shot3.png"),
+  parede: new Obj(200,200,400,400, "assets/Wall/wall2.png"),
 
 
   click(){
@@ -216,10 +217,11 @@ let fase1 = {
     this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
     this.vida.draw_text(30,"Tahoma",230,50,"white")
     this.hero.draw()
-    muro.draw()
+    
     shoots.draw()
     enemys.draw()
-    audio1.play()   
+    audio1.play() 
+    this.parede.draw()  
   },
   update(){
     shoots.update()
@@ -239,6 +241,7 @@ let fase2 = {
   vida_txt: new Text("Vida: "),
   vida: new Text(vida),
   hero: new Obj(30,300,100,150, "assets/hero/Shot3.png"),
+  parede: new Obj(300,250,150,300, "assets/Wall/wall.png"),
 
 
   click(){
@@ -270,10 +273,13 @@ let fase2 = {
     this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
     this.vida.draw_text(30,"Tahoma",230,50,"white")
     this.hero.draw()
+    this.parede.draw()
     muro.draw()
     shoots.draw()
     enemys.draw()
     audio1.play()   
+    
+   
   },
   update(){
     shoots.update()
