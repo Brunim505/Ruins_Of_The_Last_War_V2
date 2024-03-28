@@ -37,7 +37,6 @@ muro.init()
 
 let groupEnemy = []
 let enemys ={
-  time : 0,
   spawEnemys(){
     }
   },
