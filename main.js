@@ -29,9 +29,9 @@ function mudaCena(cena){
 }
 
 let audio1 = new Audio("assets/audios/musica1.mp3")
-let audio2 = new Audio("assets/audios/enemy_hit.mp3")
 let audio3 = new Audio("assets/audios/game_over.wav")
 let audio4 = new Audio("assets/audios/shot.mp3")
+let audio5 = new Audio("assets/audios/you_win.wav")
 
 let bullets = 15
 let pts = 0
@@ -80,7 +80,7 @@ let enemys ={
     // size_Y = Math.random() * (140 - 80) + 80
     pos_Y = Math.random() * (460 - 200) + 200 
     if(this.time>=1000  ){
-      groupEnemy.push(new Enemy(1400, pos_Y, 80, 150, "assets/enemy2/orc3.png"))
+      groupEnemy.push(new Enemy(1400, pos_Y, 100, 150, "Assets/esq1.png"))
         // pos y minimo = 460
         // 290
 
@@ -95,7 +95,6 @@ let enemys ={
           groupEnemy.splice(groupEnemy.indexOf(enemy),1)
           bullets = 15
           pts += 10
-          audio2.play()
         }
       })
     })
@@ -111,6 +110,7 @@ let enemys ={
     this.destroyEnemy()
       groupEnemy.forEach((enemy)=>{
       enemy.move()
+      enemy.anim('esq')
       if(enemy.x < 440 ){
         groupEnemy.splice(groupEnemy.indexOf(enemy),1)
         vida -= 1
@@ -122,8 +122,149 @@ let enemys ={
     })
   }
 }
+let enemys2 ={
+  time : 0,
+  spawEnemys(){
+    this.time +=10
+    // size_X = Math.random() * (100 - 80) + 80
+    // size_Y = Math.random() * (140 - 80) + 80
+    pos_Y = Math.random() * (460 - 200) + 200 
+    if(this.time>=1000  ){
+      groupEnemy.push(new Enemy(1400, pos_Y, 100, 180, "Assets/demo1.png"))
+        // pos y minimo = 460
+        // 290
+
+      this.time=0
+    }
+  },
+  destroyEnemy(){
+    groupShoot.forEach((shoot)=>{
+     groupEnemy.forEach((enemy)=>{
+        if(shoot.collide(enemy)){
+          groupShoot.splice(groupShoot.indexOf(shoot),1)
+          groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+          bullets = 15
+          pts += 10
+      
+        }
+      })
+    })
+  },
+
+  draw(){
+    groupEnemy.forEach((enemy)=>{
+      enemy.draw()
+    })
+  },
+  update(){
+    this.spawEnemys()
+    this.destroyEnemy()
+      groupEnemy.forEach((enemy)=>{
+      enemy.move()
+      enemy.anim2('demo')
+      if(enemy.x < 440 ){
+        groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+        vida -= 1
+      }
+      else if(vida <= 0){
+        mudaCena(gameOver)
+      }
+    
+    })
+  }
+}
+
+let enemys3 ={
+  time : 0,
+  spawEnemys(){
+    this.time +=10
+    // size_X = Math.random() * (100 - 80) + 80
+    // size_Y = Math.random() * (140 - 80) + 80
+    pos_Y = Math.random() * (460 - 200) + 200 
+    if(this.time>=1000  ){
+      groupEnemy.push(new Enemy(1400, pos_Y, 80, 150, "Assets/robo1.png"))
+        // pos y minimo = 460
+        // 290
+
+      this.time=0
+    }
+  },
+  destroyEnemy(){
+    groupShoot.forEach((shoot)=>{
+     groupEnemy.forEach((enemy)=>{
+        if(shoot.collide(enemy)){
+          groupShoot.splice(groupShoot.indexOf(shoot),1)
+          groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+          bullets = 15
+          pts += 10
+    
+        }
+      })
+    })
+  },
+
+  draw(){
+    groupEnemy.forEach((enemy)=>{
+      enemy.draw()
+    })
+  },
+  update(){
+    this.spawEnemys()
+    this.destroyEnemy()
+      groupEnemy.forEach((enemy)=>{
+      enemy.move()
+      enemy.anim('robo')
+      if(enemy.x < 440 ){
+        groupEnemy.splice(groupEnemy.indexOf(enemy),1)
+        vida -= 1
+      }
+      else if(vida <= 0){
+        mudaCena(gameOver)
+      }
+    })
+  }
+}
 let bgmenu = {
-  bg: new Obj(0,0,1300,600,"assets/backgrounds/menu.jpg"),
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/menu.jpeg"),
+
+  draw(){
+    this.bg.draw()
+  },
+}
+let bggame_over = {
+  bg: new Obj(0,0,1300,600,"assets/Backgrounds/game_over.jpg"),
+
+  draw(){
+    this.bg.draw()
+  },
+}
+
+let bgend_game = {
+  bg: new Obj(0,0,1300,600,"assets/Backgrounds/end_game.jpg"),
+
+  draw(){
+    this.bg.draw()
+  },
+}
+
+let logo = {
+  bg: new Obj(400,50,500,262,"assets/backgrounds/logo.png"),
+
+  draw(){
+    this.bg.draw()
+  },
+}
+
+let you_lose = {
+  bg: new Obj(400,50,500,500,"assets/backgrounds/you_lose.png"),
+
+  draw(){
+    this.bg.draw()
+  },
+}
+
+let you_won = {
+  bg: new Obj(400,50,500,500,"assets/backgrounds/you_won.png"),
 
   draw(){
     this.bg.draw()
@@ -135,7 +276,7 @@ let city = {
   bg: new Obj(0,0,1300,600,"assets/backgrounds/fase1.png"),
 
   draw(){
-    this.bg.draw()
+    this.bg.draw()  
   },
   next_level(){
     if(pts >= 50){
@@ -151,15 +292,29 @@ let graveyard = {
     this.bg.draw()
   },
   next_level(){
-    if(pts >= 50){
+    if(pts >= 100){
       mudaCena(fase3)
     }
   }
 }
 
+let desert = {
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/fase2.png"),
+
+  draw(){
+    this.bg.draw()
+  },
+  next_level(){
+    if(pts >= 150){
+      mudaCena(end_game)
+    }
+  }
+}
+
+
+
 let menu = {
   
-  titulo: new Text("Skull-Wave"),   
   titulo2: new Text("Aperte Espaço Para Iniciar"),
   
   inicio(event){
@@ -170,13 +325,16 @@ let menu = {
   },
 
   draw(){
+
     bgmenu.draw()
-    this.titulo.draw_text(80,"Tahoma",420,200,"darkolivegreen")
+    logo.draw()
     this.titulo2.draw_text(40,"Verdana",420,400,"white")
   },
   update(){
   },
 }
+
+let lore1 = {}
 
 let fase1 = {
   placar_txt: new Text("Pontos: "),
@@ -184,7 +342,7 @@ let fase1 = {
   vida_txt: new Text("Vida: "),
   vida: new Text(vida),
 
-  hero: new Obj(30,300,100,150, "assets/hero/Shot3.png"),
+  hero: new Obj(30,300,100,150, "assets/hero/hero1.png"),
 
 
   click(){
@@ -221,16 +379,26 @@ let fase1 = {
     enemys.draw()
     audio1.play()   
   },
+  limpa_cena(){
+    bullets = 15
+    vida = 5
+    groupEnemy = []
+    groupShoot = [] 
+  },
   update(){
     shoots.update()
     enemys.update()
+    enemys.update('robo')
     this.placar.update_text(pts)
     this.vida.update_text(vida)
     if (pts >= 50) {
+      this.limpa_cena()
       city.next_level();
   } 
 }
 }
+
+let lore2 = {}
 
 let fase2 = {
   
@@ -238,8 +406,15 @@ let fase2 = {
   placar: new Text(pts),
   vida_txt: new Text("Vida: "),
   vida: new Text(vida),
-  hero: new Obj(30,300,100,150, "assets/hero/Shot3.png"),
+  hero: new Obj(30,300,100,150, "assets/hero/hero1.png"),
 
+
+  limpa_cena(){
+    bullets = 15
+    vida = 5
+    groupEnemy = []
+    groupShoot = []
+  },
 
   click(){
     audio4.play()
@@ -272,27 +447,96 @@ let fase2 = {
     this.hero.draw()
     muro.draw()
     shoots.draw()
-    enemys.draw()
-    audio1.play()   
+    enemys2.draw()
   },
   update(){
     shoots.update()
-    enemys.update()
+    enemys2.update()
+    enemys2.update('esq')
     this.placar.update_text(pts)
     this.vida.update_text(vida)
+    if (pts >= 100) {
+      this.limpa_cena()
+      graveyard.next_level();
+  } 
   },
 }
+
+let lore3 = {}
+
+let fase3 = {
+  
+  placar_txt: new Text("Pontos: "),
+  placar: new Text(pts),
+  vida_txt: new Text("Vida: "),
+  vida: new Text(vida),
+  hero: new Obj(30,300,100,150, "assets/hero/hero1.png"),
+
+  limpa_cena(){
+    bullets = 15
+    vida = 0
+    groupEnemy = []
+    groupShoot = []  
+  },
+  
+
+  click(){
+    audio4.play()
+    if(bullets > 0){
+      bullets -= 1
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/hero/bullet.jpg"))
+    }
+  },
+  
+  movehero(event){
+    const speed = 50;
+    if (event.key === "a" && this.hero.x > 50) {
+        this.hero.x -= speed;
+      } else if (event.key === "d" && this.hero.x < 440 - this.hero.width) {
+        this.hero.x += speed;
+      } else if (event.key === "w" && this.hero.y > 150 ) {
+        this.hero.y -= speed;
+      } else if (event.key === "s" && this.hero.y < 550 - this.hero.height) {
+        this.hero.y += speed;
+      }
+      console.log(event)
+    },
+
+  draw(){
+    desert.draw()
+    this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
+    this.placar.draw_text(30,"Tahoma",1210,50,"white")
+    this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
+    this.vida.draw_text(30,"Tahoma",230,50,"white")
+    this.hero.draw()
+    enemys3.draw()
+    muro.draw()
+    shoots.draw()
+
+  },
+  update(){
+    shoots.update()
+    enemys3.update()
+    enemys3.update('robo')
+    this.placar.update_text(pts)
+    this.vida.update_text(vida)
+    if (pts >= 150) {
+      this.limpa_cena()
+      desert.next_level();
+  } 
+  },
+}
+
+let lorelost = {}
 
 let gameOver = {
   placar_txt: new Text("Pontos: "),
   placar: new Text(pts),
-  lbl_game_over: new Text("Game Over"),
 
   draw(){
-    city.draw()
-    this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
-    this.placar.draw_text(30,"Tahoma",1210,50,"white")
-    this.lbl_game_over.draw_text(80,"Verdana",400,300,"white")
+    bggame_over.draw()
+    you_lose.draw()
+    this.placar_txt.draw_text(30,"Tahoma",1100,50,"black")
     audio1.pause()
     audio3.play()
 
@@ -309,12 +553,50 @@ let gameOver = {
     groupShoot = []    
   },
 
-  click(){
+  inicio(event){
+    if (event.key == " "){
     this.limpa_cena()
     mudaCena(menu)
   }
 }
+}
 
+let lorewon = {}
+
+let end_game = {
+  placar_txt: new Text("Pontos: "),
+  placar: new Text(pts),
+  titulo2: new Text("Aperte Espaço Para Reiniciar"),
+
+  draw(){
+    bgend_game.draw()
+    you_won.draw()
+    this.placar_txt.draw_text(30,"Tahoma",1100,50,"black")
+    this.placar.draw_text(30,"Tahoma",1210,50,"black")
+    this.titulo2.draw_text(40,"Verdana",420,400,"black")
+    audio1.pause()
+    audio5.play()
+
+  },
+  update(){
+    this.placar.update_text(pts)
+  },
+
+  limpa_cena(){
+    pts = 0
+    bullets = 15
+    vida = 5
+    groupEnemy = []
+    groupShoot = []    
+  },
+
+  inicio(event){
+    if (event.key == " "){
+    this.limpa_cena()
+    mudaCena(menu)
+  }
+}
+}
 function main(){
   canvas.clearRect(0,0,1300,600)
   cenaCorrente.draw()

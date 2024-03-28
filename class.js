@@ -31,8 +31,6 @@ class Obj{
             return false
           }
     }
-    anim2(){
-    }
   }
   
   class Text{
@@ -57,10 +55,35 @@ class Obj{
   }
   
   class Enemy extends Obj{
-    velocidade = Math.random()*(12 - 2) + 2
+    tempo = 0
+    frame = 1
+
   move(){
-    this.x -= this.velocidade 
+    this.x -= 1
     }
+
+  anim(nome){
+      this.tempo +=1
+      if(this.tempo > 30){
+          this.tempo = 0
+          this.frame += 1
+      }
+      if(this.frame>6){
+          this.frame = 1
+      }
+      this.image = "Assets/"+nome+this.frame+".png"
+  }
+  anim2(nome){
+      this.tempo +=1
+      if(this.tempo > 30){
+          this.tempo = 0
+          this.frame += 1
+      }
+      if(this.frame>8){
+          this.frame = 1
+      }
+      this.image = "Assets/"+nome+this.frame+".png"
+  }
   }
 
   class Muro extends Obj{

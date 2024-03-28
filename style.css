@@ -1,0 +1,11 @@
+#canva1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+*{
+    background-color: gray;
+}
+canvas{
+    border: 10px solid black;
+}
