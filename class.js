@@ -50,7 +50,7 @@ class Obj{
   
   class Shoot extends Obj{
     move(){
-      this.x +=20
+      this.x +=10
     }
   }
   

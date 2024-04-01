@@ -28,12 +28,15 @@ function mudaCena(cena){
   cenaCorrente = cena
 }
 
-let audio1 = new Audio("assets/audios/musica1.mp3")
-let audio3 = new Audio("assets/audios/game_over.wav")
-let audio4 = new Audio("assets/audios/shot.mp3")
-let audio5 = new Audio("assets/audios/you_win.wav")
+let robot_music = new Audio("assets/audios/robot_music.mp3")
+let esq_music = new Audio("assets/audios/esq_music.mp3")
+let demon_music = new Audio("assets/audios/demon_music.mp3")
+let menu_music = new Audio("assets/audios/menu_music.mp3")
+let game_over_audio = new Audio("assets/audios/game_over.wav")
+let shoot_audio = new Audio("assets/audios/shot.mp3")
+let you_win_audio = new Audio("assets/audios/you_win.wav")
 
-let bullets = 15
+let bullets = 2
 let pts = 0
 let vida = 5
 
@@ -58,9 +61,10 @@ let shoots = {
 let groupMuro = []
 let muro = {
   init(){
-    groupMuro.push(new Muro(450,50,20,100,'blue')),
-    groupMuro.push(new Muro(450,250,20,100,'blue')),
-    groupMuro.push(new Muro(450,450,20,100,'blue'))
+    groupMuro.push(new Obj(450,310,80,120,'assets/wall/wall2.png')),
+    groupMuro.push(new Obj(450,380,80,120,'assets/wall/wall2.png')),
+    groupMuro.push(new Obj(450,450,80,120,'assets/wall/wall3.png')),
+    groupMuro.push(new Obj(450,520,80,120,'assets/wall/wall3.png'))
 
   },
   draw(){
@@ -78,7 +82,7 @@ let enemys ={
     this.time +=10
     // size_X = Math.random() * (100 - 80) + 80
     // size_Y = Math.random() * (140 - 80) + 80
-    pos_Y = Math.random() * (460 - 200) + 200 
+    pos_Y = Math.random() * (460 - 250) + 250 
     if(this.time>=1000  ){
       groupEnemy.push(new Enemy(1400, pos_Y, 100, 150, "Assets/esq1.png"))
         // pos y minimo = 460
@@ -93,7 +97,7 @@ let enemys ={
         if(shoot.collide(enemy)){
           groupShoot.splice(groupShoot.indexOf(shoot),1)
           groupEnemy.splice(groupEnemy.indexOf(enemy),1)
-          bullets = 15
+          bullets = 2
           pts += 10
         }
       })
@@ -129,7 +133,7 @@ let enemys2 ={
     // size_X = Math.random() * (100 - 80) + 80
     // size_Y = Math.random() * (140 - 80) + 80
     pos_Y = Math.random() * (460 - 200) + 200 
-    if(this.time>=1000  ){
+    if(this.time>=500  ){
       groupEnemy.push(new Enemy(1400, pos_Y, 100, 180, "Assets/demo1.png"))
         // pos y minimo = 460
         // 290
@@ -143,7 +147,7 @@ let enemys2 ={
         if(shoot.collide(enemy)){
           groupShoot.splice(groupShoot.indexOf(shoot),1)
           groupEnemy.splice(groupEnemy.indexOf(enemy),1)
-          bullets = 15
+          bullets = 2
           pts += 10
       
         }
@@ -181,7 +185,7 @@ let enemys3 ={
     // size_X = Math.random() * (100 - 80) + 80
     // size_Y = Math.random() * (140 - 80) + 80
     pos_Y = Math.random() * (460 - 200) + 200 
-    if(this.time>=1000  ){
+    if(this.time>=250  ){
       groupEnemy.push(new Enemy(1400, pos_Y, 80, 150, "Assets/robo1.png"))
         // pos y minimo = 460
         // 290
@@ -195,7 +199,7 @@ let enemys3 ={
         if(shoot.collide(enemy)){
           groupShoot.splice(groupShoot.indexOf(shoot),1)
           groupEnemy.splice(groupEnemy.indexOf(enemy),1)
-          bullets = 15
+          bullets = 2
           pts += 10
     
         }
@@ -226,6 +230,13 @@ let enemys3 ={
 }
 let bgmenu = {
   bg: new Obj(0,0,1300,600,"assets/backgrounds/menu.jpeg"),
+
+  draw(){
+    this.bg.draw()
+  },
+}
+let bgmenu2 = {
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/menu2.png"),
 
   draw(){
     this.bg.draw()
@@ -279,8 +290,8 @@ let city = {
     this.bg.draw()  
   },
   next_level(){
-    if(pts >= 50){
-      mudaCena(fase2)
+    if(pts >= 300){
+      mudaCena(end_game)
     }
   }
 }
@@ -292,21 +303,21 @@ let graveyard = {
     this.bg.draw()
   },
   next_level(){
-    if(pts >= 100){
+    if(pts >= 200){
       mudaCena(fase3)
     }
   }
 }
 
-let desert = {
-  bg: new Obj(0,0,1300,600,"assets/backgrounds/fase2.png"),
+let apocalypse = {
+  bg: new Obj(0,0,1300,600,"assets/backgrounds/fase3.png"),
 
   draw(){
     this.bg.draw()
   },
   next_level(){
-    if(pts >= 150){
-      mudaCena(end_game)
+    if(pts >= 100){
+      mudaCena(fase2)
     }
   }
 }
@@ -319,16 +330,32 @@ let menu = {
   
   inicio(event){
     if (event.key == " "){
+      mudaCena(menu2);
+      console.log()
+    }
+  },
+
+  draw(){
+    bgmenu.draw()
+    logo.draw()
+    this.titulo2.draw_text(40,"Verdana",420,400,"white")
+    menu_music.play()
+  },
+  update(){
+  },
+}
+let menu2 = {
+  
+  inicio(event){
+    if (event.key == " "){
       mudaCena(fase1);
       console.log()
     }
   },
 
   draw(){
-
-    bgmenu.draw()
-    logo.draw()
-    this.titulo2.draw_text(40,"Verdana",420,400,"white")
+    bgmenu2.draw()
+    menu_music.play()
   },
   update(){
   },
@@ -346,10 +373,10 @@ let fase1 = {
 
 
   click(){
-    audio4.play()
+    shoot_audio.play()
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/hero/bullet.jpg"))
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+10,20,10, "assets/hero/bullet.jpg"))
     }
   },
   
@@ -359,16 +386,16 @@ let fase1 = {
         this.hero.x -= speed;
       } else if (event.key === "d" && this.hero.x < 440 - this.hero.width) {
         this.hero.x += speed;
-      } else if (event.key === "w" && this.hero.y > 200 ) {
+      } else if (event.key === "w" && this.hero.y > 250 ) {
         this.hero.y -= speed;
-      } else if (event.key === "s" && this.hero.y < 550 - this.hero.height) {
+      } else if (event.key === "s" && this.hero.y < 600 - this.hero.height) {
         this.hero.y += speed;
       }
       console.log(event)
     },
 
   draw(){
-    city.draw()
+    apocalypse.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
     this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
@@ -377,7 +404,8 @@ let fase1 = {
     muro.draw()
     shoots.draw()
     enemys.draw()
-    audio1.play()   
+    menu_music.pause()
+    robot_music.play()   
   },
   limpa_cena(){
     bullets = 15
@@ -388,12 +416,12 @@ let fase1 = {
   update(){
     shoots.update()
     enemys.update()
-    enemys.update('robo')
+    enemys.update('esq')
     this.placar.update_text(pts)
     this.vida.update_text(vida)
-    if (pts >= 50) {
+    if (pts >= 100) {
       this.limpa_cena()
-      city.next_level();
+      apocalypse.next_level();
   } 
 }
 }
@@ -417,7 +445,7 @@ let fase2 = {
   },
 
   click(){
-    audio4.play()
+    shoot_audio.play()
     if(bullets > 0){
       bullets -= 1
       groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/hero/bullet.jpg"))
@@ -448,14 +476,16 @@ let fase2 = {
     muro.draw()
     shoots.draw()
     enemys2.draw()
+    robot_music.pause()
+    demon_music.play()
   },
   update(){
     shoots.update()
     enemys2.update()
-    enemys2.update('esq')
+    enemys2.update('demo')
     this.placar.update_text(pts)
     this.vida.update_text(vida)
-    if (pts >= 100) {
+    if (pts >= 200) {
       this.limpa_cena()
       graveyard.next_level();
   } 
@@ -481,10 +511,10 @@ let fase3 = {
   
 
   click(){
-    audio4.play()
+    shoot_audio.play()
     if(bullets > 0){
       bullets -= 1
-      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+25,20,10, "assets/hero/bullet.jpg"))
+      groupShoot.push(new Shoot(165,(this.hero.y+this.hero.height/2)+0,20,10, "assets/hero/bullet.jpg"))
     }
   },
   
@@ -494,7 +524,7 @@ let fase3 = {
         this.hero.x -= speed;
       } else if (event.key === "d" && this.hero.x < 440 - this.hero.width) {
         this.hero.x += speed;
-      } else if (event.key === "w" && this.hero.y > 150 ) {
+      } else if (event.key === "w" && this.hero.y > 210 ) {
         this.hero.y -= speed;
       } else if (event.key === "s" && this.hero.y < 550 - this.hero.height) {
         this.hero.y += speed;
@@ -503,7 +533,7 @@ let fase3 = {
     },
 
   draw(){
-    desert.draw()
+    city.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"white")
     this.placar.draw_text(30,"Tahoma",1210,50,"white")
     this.vida_txt.draw_text(30,"Tahoma",100,50,"white")
@@ -512,6 +542,8 @@ let fase3 = {
     enemys3.draw()
     muro.draw()
     shoots.draw()
+    demon_music.pause()
+    esq_music.play()
 
   },
   update(){
@@ -520,9 +552,9 @@ let fase3 = {
     enemys3.update('robo')
     this.placar.update_text(pts)
     this.vida.update_text(vida)
-    if (pts >= 150) {
+    if (pts >= 300) {
       this.limpa_cena()
-      desert.next_level();
+      city.next_level();
   } 
   },
 }
@@ -537,8 +569,10 @@ let gameOver = {
     bggame_over.draw()
     you_lose.draw()
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"black")
-    audio1.pause()
-    audio3.play()
+    robot_music.pause()
+    esq_music.pause()
+    demon_music.pause()
+    game_over_audio.play()
 
   },
   update(){
@@ -574,8 +608,10 @@ let end_game = {
     this.placar_txt.draw_text(30,"Tahoma",1100,50,"black")
     this.placar.draw_text(30,"Tahoma",1210,50,"black")
     this.titulo2.draw_text(40,"Verdana",420,400,"black")
-    audio1.pause()
-    audio5.play()
+    robot_music.pause()
+    esq_music.pause()
+    demon_music.pause()
+    you_win_audio.play()
 
   },
   update(){
