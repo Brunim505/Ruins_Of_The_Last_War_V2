@@ -31,6 +31,17 @@ class Obj{
             return false
           }
     }
+    anim_hero(nome){
+      this.tempo +=1
+      if(this.tempo > 30){
+          this.tempo = 0
+          this.frame += 1
+      }
+      if(this.frame>=3){
+          this.frame = 1
+      }
+      this.image = "assets/"+nome+this.frame+".png"
+  }
   }
   
   class Text{
