@@ -1,10 +1,16 @@
-
+var canvas = document.getElementById('canvas').getContext("2d")
+canvas.imageSmoothingEnabled = false
 
   document.addEventListener("click", (e)=>{
+    if(cenaCorrente.click){
+      cenaCorrente.click()
+    }
   });
 
   document.addEventListener('keydown',(e)=>{
-
+    if(cenaCorrente.movehero){
+        cenaCorrente.movehero(e)
+    }
   })
   document.addEventListener('keydown',(e)=>{
     if(cenaCorrente.inicio){
@@ -17,11 +23,14 @@
     }
   })
   document.addEventListener('keyup', (e)=>{
-
+    if(cenaCorrente.movehero){
+        cenaCorrente.movehero(e)
+    }
   })
 
 let cenaCorrente = {}
 function mudaCena(cena){  
+  cenaCorrente = cena
 }
 
 let robot_music = new Audio("assets/audios/robot_music.mp3")
@@ -40,8 +49,17 @@ let vida = 5
 let groupShoot = []
 let shoots = {
   draw(){
+    groupShoot.forEach((shoot)=>{
+      shoot.draw()
+    })
   },
   update(){
+    groupShoot.forEach((shoot)=>{
+      shoot.move()
+      if(shoot.x>=1400){
+        groupShoot.splice(shoot[0],1)
+      }
+    })
   },
 }
 
@@ -56,6 +74,8 @@ let muro = {
 
   },
   draw(){
+    groupMuro.forEach((muro) =>{
+      muro.draw()
     })
   } 
 }
@@ -264,53 +284,6 @@ let you_won = {
     this.bg.draw()
   },
 }
-let bgmenu2 = {
-  bg: new Obj(1,2,1300,600,"assets/backgrounds/menu2.png"),
-
-  draw(){
-    this.bg.draw()
-  },
-}
-let bggame_over = {
-  bg: new Obj(0,0,1300,600,"assets/Backgrounds/game_over.jpg"),
-
-  draw(){
-    this.bg.draw()
-  },
-}
-
-let bgend_game = {
-  bg: new Obj(0,0,1300,600,"assets/Backgrounds/end_game.jpg"),
-
-  draw(){
-    this.bg.draw()
-  },
-}
-
-let logo = {
-  bg: new Obj(400,50,500,262,"assets/backgrounds/logo.png"),
-
-  draw(){
-    this.bg.draw()
-  },
-}
-
-let you_lose = {
-  bg: new Obj(400,50,500,500,"assets/backgrounds/you_lose.png"),
-
-  draw(){
-    this.bg.draw()
-  },
-}
-
-let you_won = {
-  bg: new Obj(400,50,500,500,"assets/backgrounds/you_won.png"),
-
-=======
->>>>>>> 0b85160160ff4539f73b2ffafa8c823a6aa1a612
-  draw(){
-  },
-}
 
 
 let city = {
@@ -418,28 +391,6 @@ let lore1 = {
 
   draw(){
     apocalypse.draw_lore()
-  },
-  update(){
-  },}
-
-let lore1 = {  
-  inicio(event){
-    if (event.key == " "){
-      mudaCena(fase1);
-      console.log()
-    }
-  },
-
-  draw(){
-    apocalypse.draw_lore()
-=======
-  
-  inicio(event){
-  },
-
-  draw(){
-   
->>>>>>> 0b85160160ff4539f73b2ffafa8c823a6aa1a612
   },
   update(){
   },}
@@ -811,7 +762,11 @@ let end_game = {
 }
 }
 function main(){
+  canvas.clearRect(0,0,1300,600)
+  cenaCorrente.draw()
+  cenaCorrente.update()
+  requestAnimationFrame(main)
 }
 
-
-
+mudaCena(menu)
+main()

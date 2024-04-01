@@ -1,10 +1,23 @@
 class Obj{
+
+    frame = 0
+    timer = 0
+    set_visible = true
   
     constructor(x,y,width,height, image){
+      this.x = x
+      this.y = y
+      this.width = width
+      this.height = height
+      this.image = image
     }
   
     draw(){
-
+      if (this.set_visible) {
+        var img = new Image()
+        img.src = this.image
+        canvas.drawImage(img, this.x, this.y, this.width, this.height)
+      }
     }
     
     collide(obj){
@@ -31,18 +44,26 @@ class Obj{
   }
   }
   
-class Text extends Obj{
+  class Text{
+    texto = ""
+    constructor(text){
+      this.texto = text
+    }
     draw_text(size, font, x, y, color){
+      canvas.font = size + "px" + " " + font
+      canvas.fillStyle = color
+      canvas.fillText(this.texto, x, y)
     }
     update_text(valor){
+      this.texto = valor
     }
-}
+  }
   
   class Shoot extends Obj{
     move(){
       this.x +=10
     }
-}
+  }
   
   class Enemy extends Obj{
     tempo = 0
@@ -82,5 +103,6 @@ class Text extends Obj{
       canvas.fillRect(this.x, this.y, this.width, this.height)
     }
   }
+  
   
   
